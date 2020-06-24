@@ -4,7 +4,7 @@ import utils from "../utils";
 export default class Products extends Component {
   render() {
     const productsItems = this.props.products.map((product) => (
-      <div className="col-md-4">
+      <div className="col-md-4" key={product.id}>
         <div className="thumbnail text-center">
           <a
             href={`#${product.id}`}

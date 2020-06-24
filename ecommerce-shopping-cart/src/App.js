@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Products from "./components/Products";
 import Filter from "./components/Filter";
@@ -11,7 +10,10 @@ class App extends Component {
       products: [],
       filteredProducts: [],
     };
+    this.handleChangeSort = this.handleChangeSort.bind(this);
+    this.handleChangeSize = this.handleChangeSize.bind(this);
   }
+
   componentWillMount() {
     fetch("http://localhost:8000/products")
       .then((res) => res.json())
@@ -22,6 +24,35 @@ class App extends Component {
         })
       );
   }
+
+  handleChangeSort(e) {
+    this.setState({ sort: e.target.value });
+    this.listProduct();
+  }
+  handleChangeSize(e) {
+    this.setState({ size: e.target.value });
+    this.listProduct();
+  }
+
+  listProduct() {
+    this.setState((state) => {
+      if (state.sort !== "") {
+        state.products.sort((a, b) =>
+          state.sort === "lowest"
+            ? a.price > b.price
+              ? 1
+              : -1
+            : a.price < b.price
+            ? 1
+            : -1
+        );
+      } else {
+        state.products.sort((a, b) => (a.id > b.id ? 1 : -1));
+      }
+      return { filteredProducts: state.products };
+    });
+  }
+
   render() {
     return (
       <div className="container">
