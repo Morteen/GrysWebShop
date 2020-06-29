@@ -18,7 +18,22 @@ export class Filter extends Component {
             <option value="Highest">Fra høyest til lavest</option>
           </select>
         </div>
-        <div className="col-md-4"></div>
+        <div className="col-md-4">
+          <label>Sorter etter str </label>
+          <select
+            className="form-control"
+            value={this.props.size}
+            onChange={this.props.handleChangeSize}
+          >
+            <option value="">Alle</option>
+            <option value="XS">XS</option>
+            <option value="S">Small</option>
+            <option value="M">Medium</option>
+            <option value="L">Large</option>
+            <option value="XL">XL</option>
+            <option value="XXL">XXL</option>
+          </select>
+        </div>
       </div>
     );
   }
