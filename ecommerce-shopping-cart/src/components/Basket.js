@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import utils from "../utils";
+import { addToCart, removeFromCart } from "../actions/cartAction";
 
-export default class Basket extends Component {
+class Basket extends Component {
   render() {
     const { cartItems } = this.props;
     return (
@@ -13,18 +15,18 @@ export default class Basket extends Component {
         )}
         {cartItems.length > 0 && (
           <div>
-            <ul>
+            <ul id="cartList">
               {cartItems.map((item, index) => (
                 <li key={index}>
                   <b>{item.title} </b>
                   {item.count} = {utils.formatCurrency(item.price * item.count)}
-                  <button
-                    className=" btn
-                      btn-danger"
-                    onClick={(e) => this.props.handleRemoveFromCart(e, item)}
+                  <div
+                    onClick={() =>
+                      this.props.removeFromCart(this.props.cartItems, item)
+                    }
                   >
                     x
-                  </button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -32,9 +34,21 @@ export default class Basket extends Component {
             {utils.formatCurrency(
               cartItems.reduce((a, c) => a + c.price * c.count, 0)
             )}
+            <br></br>
+            <button
+              className="btn btn-primary"
+              onClick={() => alert("Checkout må implementeres")}
+            >
+              Kjøp
+            </button>
           </div>
         )}
       </div>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  cartItems: state.cart.items,
+});
+
+export default connect(mapStateToProps, { removeFromCart })(Basket);
